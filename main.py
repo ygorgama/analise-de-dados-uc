@@ -1,4 +1,5 @@
 import pandas as pd
+from numpy import isnan
 
 dataset = pd.read_csv('febre_amarela.csv', sep=';')
 
@@ -12,24 +13,29 @@ print(contagem_de_valores_nulos)
 
 print('--------------------------------')
 
+
 print(contagem_de_valores_validos)
-
-dataset = dataset.drop(columns=['DT_OBITO'])
-
 
 
 
 print('--------------------------------')
 contagem_valores_positivos_negativos_obito =  dataset.groupby(['OBITO']).count()
+
+# Substitu todos os obitos por N�O
 dataset['OBITO'] = dataset['OBITO'].fillna('N�O')
+
+
+
+# Substitui os valores do data por uma seqência numérica
+dataset['OBITO'] = dataset['OBITO'].replace('N�O', 0)
+dataset['OBITO'] = dataset['OBITO'].replace('SIM', 1)
+dataset['OBITO'] = dataset['OBITO'].replace('IGN', 2)
 
 print(contagem_valores_positivos_negativos_obito) 
 
 print('--------------------------------')
-# dataset['OBITO'] =  dataset["OBITO"].replace('01/12/1994', 'SIM')
-# dataset['OBITO'] = dataset["OBITO"].replace('07/04/2000', 'SIM')
-# dataset['OBITO'] = dataset["OBITO"].replace('20/02/2003', 'SIM')
-# dataset['OBITO'] = dataset["OBITO"].replace('23/01/2017', 'SIM')
+dataset = dataset.fillna('NI')
+print('--------------------------------')
 
 contagem_valores_positivos_negativos_obito =  dataset.groupby(['OBITO']).count()
 print(contagem_valores_positivos_negativos_obito) 
